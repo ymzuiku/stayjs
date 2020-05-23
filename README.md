@@ -4,7 +4,7 @@ Only a library, Use library create web application, We don't need a framework.
 
 We love sevlte's design, bu we love JS/TS more, not .sevlte.
 
-`stayjs` is just stay in javascript/typescript, we didn't need JSX, we didn't need VDOM, like sevlte.
+`stayjs` is just stay in javascript/typescript, we didn't need JSX, use javascript create like XML's dom tree; we didn't need VDO(like sevlte), Observer/Subject update dom.
 
 ## Faster!!!
 
@@ -112,7 +112,7 @@ Use `El(<Component>, ....)` change component top level tree props
 ```js
 import { El, State } from "stayjs";
 
-// we don't need props
+// Top level element don't need props
 function BigButton() {
   return El("button", {
     style: { fontSize: "30px", textContent: "no props button" },
@@ -140,7 +140,6 @@ Use `Component(props)` change component sub level tree props
 ```js
 import { El, State } from "stayjs";
 
-// we don't need props
 function BigButton({ fontSize = "30px", background, color }) {
   return El("div", {style:{color}} [
     El("button", {
@@ -340,6 +339,5 @@ document.body.append(Box());
 
 ## End
 
-stayjs is vanilla.js library, so we can use all js library complate your project.
-
+stayjs is vanilla.js library, so we can use all js library complate your project. and use javascript create like XML's dom tree.
 enjoy stayjs, thx.
