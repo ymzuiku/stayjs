@@ -22,10 +22,10 @@ interface ElePrototypeOptions {
 }
 
 const ignoreProp = {
-  useState: 1,
-  useChildren: 1,
-  useMemo: 1,
-  useRef: 1,
+  $bind: 1,
+  $append: 1,
+  $memo: 1,
+  $ref: 1,
 };
 
 const El: typeof IEl & ElePrototypeOptions = (
@@ -60,7 +60,7 @@ const El: typeof IEl & ElePrototypeOptions = (
           } else if (k.indexOf("add") === 0) {
             const addKey = k.replace("add", "on");
             const oldEvent = (ele as any)[addKey];
-            (ele as any)[k] = (e: any) => {
+            (ele as any)[addKey] = (e: any) => {
               if (oldEvent) {
                 oldEvent(e);
               }
@@ -98,23 +98,23 @@ const El: typeof IEl & ElePrototypeOptions = (
         }
       });
 
-      // 实现 useOb逻辑
-      const _useState = props["useState"];
-      if (_useState) {
+      // 实现 bind state 逻辑
+      const $bind = props["$bind"];
+      if ($bind) {
         let appendCache: any;
         let memoCache: any;
-        const _useChildren = props["useChildren"];
-        if (typeof _useChildren === "function") {
-          appendCache = _useChildren();
+        const $append = props["$append"];
+        if (typeof $append === "function") {
+          appendCache = $append();
         }
-        const _useMemo = props["useMemo"];
-        if (typeof _useMemo === "function") {
-          memoCache = _useMemo();
+        const $memo = props["$memo"];
+        if (typeof $memo === "function") {
+          memoCache = $memo();
         }
-        _useState.forEach((ob: any) => {
+        $bind.forEach((ob: any) => {
           ob.subscribeElement(() => {
-            if (_useChildren) {
-              let nextCache = _useChildren();
+            if ($append) {
+              let nextCache = $append();
               for (let i = 0; i < nextCache.length; i++) {
                 if (nextCache[i] !== appendCache[i]) {
                   fixChildren(ele, children);
@@ -123,8 +123,8 @@ const El: typeof IEl & ElePrototypeOptions = (
               }
               appendCache = nextCache;
             }
-            if (_useMemo) {
-              let nextCache = _useMemo();
+            if ($memo) {
+              let nextCache = $memo();
               for (let i = 0; i < nextCache.length; i++) {
                 if (nextCache[i] !== memoCache[i]) {
                   fns.forEach((fn) => fn());
@@ -138,7 +138,7 @@ const El: typeof IEl & ElePrototypeOptions = (
           })(ele);
         });
       }
-      const _useRef = props["useRef"];
+      const _useRef = props["$ref"];
 
       if (typeof _useRef === "function") {
         _useRef(ele);

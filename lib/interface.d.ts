@@ -967,29 +967,29 @@ interface AddEventOptions extends EventOptions {
   [key: string]: any;
 }
 
-type _AnyFn = (e: any) => any;
-type AnyGet = _AnyFn | any;
+type AnyFn = (e: any) => any;
+type AnyGet = AnyFn | any;
 
-type _StringFn = (e: any) => string;
-type StringGet = _StringFn | string;
+type StringFn = (e: any) => string;
+type StringGet = StringFn | string;
 
-type _numberFn = (e: any) => number;
-type NumberFn = _numberFn | number;
+type NumberFn = (e: any) => number;
+type NumberFn = NumberFn | number;
 
-type _BoolFn = (e: any) => boolean;
-type BoolGet = _BoolFn | boolean;
+type BoolFn = (e: any) => boolean;
+type BoolGet = BoolFn | boolean;
 
-type _StyleFn = (e: any) => IStyle;
-type StyleGet = _StyleFn | IStyle;
+type StyleFn = (e: any) => IStyle;
+type StyleGet = StyleFn | IStyle;
 
 type RefOne = (e: HTMLElement) => any;
 type RefList = ((e: HTMLElement) => any)[];
 
 export interface IProps extends AddEventOptions {
-  useRef?: RefOne | RefList;
-  useState?: any[];
-  useChildren?: () => any[];
-  useMemo?: () => any[];
+  $ref?: RefOne | RefList;
+  $bind?: any[];
+  $append?: () => any[];
+  $memo?: () => any[];
   [key: string]: any;
   [index: number]: any;
   className?: StringGet;
@@ -1001,6 +1001,7 @@ export interface IProps extends AddEventOptions {
   draggable?: BoolGet;
   hidden?: BoolGet;
   innerText?: StringGet;
+  innerHTML?: StringGet;
   lang?: StringGet;
   spellcheck?: BoolGet;
   title?: StringGet;
@@ -1023,81 +1024,26 @@ export interface IProps extends AddEventOptions {
   formTarget?: StringGet;
   height?: NumberFn;
   indeterminate?: BoolGet;
-  /**
-   * Defines the maximum acceptable value for an input element with type="number".When used with the min and step attributes, lets you control the range and increment (such as only even numbers) that the user can enter into an input field.
-   */
   max?: StringGet;
-  /**
-   * Sets or retrieves the maximum number of characters that the user can enter in a text control.
-   */
   maxLength?: NumberFn;
-  /**
-   * Defines the minimum acceptable value for an input element with type="number". When used with the max and step attributes, lets you control the range and increment (such as even numbers only) that the user can enter into an input field.
-   */
   min?: StringGet;
   minLength?: NumberFn;
-  /**
-   * Sets or retrieves the Boolean value indicating whether multiple items can be selected from a list.
-   */
   multiple?: StringGet;
-  /**
-   * Sets or retrieves the name of the object.
-   */
   name?: StringGet;
-  /**
-   * Gets or sets a string containing a regular expression that the user's input must match.
-   */
   pattern?: StringGet;
-  /**
-   * Gets or sets a text string that is displayed in an input field as a hint or prompt to users as the format or type of information they need to enter.The text appears in an input field until the user puts focus on the field.
-   */
   placeholder?: StringGet;
   readOnly?: BoolGet;
-  /**
-   * When present, marks an element that can't be submitted without a value.
-   */
   required?: BoolGet;
   selectionDirection?: StringGet | null;
-  /**
-   * Gets or sets the end position or offset of a text selection.
-   */
   selectionEnd?: NumberFn | null;
-  /**
-   * Gets or sets the starting position or offset of a text selection.
-   */
   selectionStart?: NumberFn | null;
   size?: NumberFn;
-  /**
-   * The address or URL of the a media resource that is to be considered.
-   */
   src?: StringGet;
-  /**
-   * Defines an increment or jump between values that you want to allow the user to enter. When used with the max and min attributes, lets you control the range and increment (for example, allow only even numbers) that the user can enter into an input field.
-   */
   step?: StringGet;
-  /**
-   * Returns the content type of the object.
-   */
   type?: StringGet;
-  /**
-   * Sets or retrieves the URL, often with a bookmark extension (#name), to use as a client-side image map.
-   */
-  /** @deprecated */
-  // useMap?: StringGet;
-  /**
-   * Returns the value of the data at the cursor's current position.
-   */
   value?: StringGet;
-  /**
-   * Returns a Date object representing the form control's value, if applicable; otherwise, returns null. Can be set, to change the value. Throws an "InvalidStateError" DOMException if the control isn't date- or time-based.
-   */
   valueAsDate?: Date | null;
-  /**
-   * Returns the input field value as a number.
-   */
   valueAsNumber?: NumberFn;
-  /**
-   * Sets or retrieves the width of the object.
-   */
   width?: NumberFn;
+  height?: NumberFn;
 }

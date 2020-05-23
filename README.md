@@ -65,7 +65,7 @@ El type like: `El(Element|string, Props|className|children, children|()=>childre
 
 We use State:
 
-`useState:[state]`: subject state's update, if element is remove, auto unsubject.
+`$bind:[state]`: subject state's update, if element is remove, auto unsubject.
 
 `state.update`: update all subject's element
 
@@ -79,8 +79,8 @@ function Box() {
   });
 
   return El("div", [
-    El("h1", { useState: [state], textContent: () => state.val.name }),
-    El("h2", { useState: [state], textContent: () => state.val.age }),
+    El("h1", { $bind: [state], textContent: () => state.val.name }),
+    El("h2", { $bind: [state], textContent: () => state.val.age }),
     El("button", { onClick: () => state.update((val) => val.age++) }, [
       "touch me, change age",
     ]),
@@ -101,7 +101,7 @@ function Box() {
   });
 
   return El("div", [
-    El("p", { useState: [state], textContent: () => state.val.text }),
+    El("p", { $bind: [state], textContent: () => state.val.text }),
     El("input", {
       oninput: (e) => state.update((val) => (val.text = e.target.value)),
     }),
@@ -128,7 +128,7 @@ function BigButton() {
 function Box() {
   const state = State(["dog", "cat", "fish"]);
 
-  return El("div", { useChildren: () => state.val.length }, [
+  return El("div", [
     El("p", { textContent: "hello button:" }),
     BigButton(),
     El(BigButton, {
@@ -157,7 +157,7 @@ function BigButton({ fontSize = "30px", background, color }) {
 function Box() {
   const state = State(["dog", "cat", "fish"]);
 
-  return El("div", { useChildren: () => state.val.length }, [
+  return El("div", [
     El("p", { textContent: "hello button:" }),
     BigButton({fontSize: '50px', background:'#f55', color:'#fff'})
   ]);
@@ -168,7 +168,7 @@ document.body.append(Box());
 
 ## Map Render List
 
-We can add `useChildren: () => state.val.length` in Element, when state change and useChildren callback's value change, stayjs can help you update list.
+We can add `$append: () => [state.val.length]` in Element, when state change and $append callback's value change, stayjs can help you update list.
 
 When stayjs update list, stayjs only update new item, or delete item. There have hight performent at big list screen.
 
@@ -180,7 +180,7 @@ import { El, State } from "stayjs";
 function Box() {
   const state = State(["dog", "cat", "fish"]);
 
-  return El("div", { useChildren: () => state.val.length }, () => [
+  return El("div", { $append: () => state.val.length }, () => [
     El("p", { textContent: "input change list:" }),
     El("button", { onclick: () => state.update(() => (state.val = [])) }, [
       "Clear list",
@@ -208,7 +208,7 @@ const state = State({
 
 function PageA() {
   return El("div", [
-    El("p", { useState: [state], textContent: () => state.val.text }),
+    El("p", { $bind: [state], textContent: () => state.val.text }),
     El("input", {
       oninput: (e) => state.update((val) => (val.text = e.target.value)),
     }),
@@ -217,7 +217,7 @@ function PageA() {
 
 function PageB() {
   return El("div", [
-    El("p", { useState: [state], textContent: () => state.val.text }),
+    El("p", { $bind: [state], textContent: () => state.val.text }),
     El("input", {
       oninput: (e) => state.update((val) => (val.text = e.target.value)),
     }),
@@ -227,11 +227,11 @@ function PageB() {
 document.body.append(PageA(), PageB());
 ```
 
-## useMemo
+## Like react useMemo
 
-`stayjs` is high performance，we can controll useState's state. and we can use `useMemo` intercept detail update.
+`stayjs` is high performance，we can controll $bind's state. and we can use `$memo` intercept detail update.
 
-This example, `h1` is no rerender, because it useMemo's data no change.
+This example, `h1` is no rerender, because it $memo's data no change.
 
 ```js
 import { El, State } from "stayjs";
@@ -244,13 +244,13 @@ function Box() {
 
   return El("div", [
     El("h1", {
-      useState: [state],
-      useMemo: (val) => [val.name],
+      $bind: [state],
+      $memo: (val) => [val.name],
       textContent: () => state.val.name,
     }),
     El("h2", {
-      useState: [state],
-      useMemo: (val) => [val.age],
+      $bind: [state],
+      $memo: (val) => [val.age],
       textContent: () => state.val.age,
     }),
     El("button", { onClick: () => state.update((val) => val.age++) }, [
@@ -280,7 +280,7 @@ const state = State({
 
 function PageA() {
   return El("div", [
-    El("p", { useState: [state], textContent: () => state.val.text }),
+    El("p", { $bind: [state], textContent: () => state.val.text }),
     El("input", {
       oninput: (e) => state.update((val) => (val.text = e.target.value)),
     }),
@@ -289,7 +289,7 @@ function PageA() {
 
 function PageB() {
   return El("div", [
-    El("p", { useState: [state], textContent: () => state.val.text }),
+    El("p", { $bind: [state], textContent: () => state.val.text }),
     El("input", {
       oninput: (e) => state.update((val) => (val.text = e.target.value)),
     }),

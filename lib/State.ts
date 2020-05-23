@@ -1,6 +1,5 @@
 export default function State<T>(initVal: T) {
   const fns = new Set();
-
   const obj = {
     val: initVal,
     next: () => {
