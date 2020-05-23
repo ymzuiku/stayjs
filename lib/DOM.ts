@@ -25,6 +25,7 @@ const ignoreProp = {
   useState: 1,
   useChildren: 1,
   useMemo: 1,
+  useRef: 1,
 };
 
 const DOM: typeof IStay & ElePrototypeOptions = (
@@ -41,53 +42,12 @@ const DOM: typeof IStay & ElePrototypeOptions = (
 
   if (props) {
     if (typeof props === "string") {
-      ele.className = "props";
+      ele.className = props;
     } else if (typeof props === "function") {
       props(ele);
     } else if (Object.prototype.toString.call(props) === "[object Array]") {
       children = props;
     } else {
-      // 实现 useOb逻辑
-      const _useState = props["useState"];
-      if (_useState) {
-        let appendCache: any;
-        let memoCache: any;
-        const _useChildren = props["useChildren"];
-        if (_useChildren) {
-          appendCache = _useChildren();
-        }
-        const _useMemo = props["useMemo"];
-        if (_useMemo) {
-          memoCache = _useMemo();
-        }
-        _useState.forEach((ob: any) => {
-          ob.subscribeElement(() => {
-            if (_useChildren) {
-              let nextCache = _useChildren();
-              for (let i = 0; i < nextCache.length; i++) {
-                if (nextCache[i] !== appendCache[i]) {
-                  fixChildren(ele, children);
-                  break;
-                }
-              }
-              appendCache = nextCache;
-            }
-            if (_useMemo) {
-              let nextCache = _useMemo();
-              for (let i = 0; i < nextCache.length; i++) {
-                if (nextCache[i] !== memoCache[i]) {
-                  fns.forEach((fn) => fn());
-                  break;
-                }
-              }
-              memoCache = nextCache;
-            } else {
-              fns.forEach((fn) => fn());
-            }
-          })(ele);
-        });
-      }
-
       // 实现其他props赋值和观察
       Object.keys(props).forEach((k) => {
         if ((ignoreProp as any)[k]) {
@@ -97,6 +57,15 @@ const DOM: typeof IStay & ElePrototypeOptions = (
         if (typeof obj === "function") {
           if (k.indexOf("on") === 0) {
             (ele as any)[k] = obj;
+          } else if (k.indexOf("add") === 0) {
+            const addKey = k.replace("add", "on");
+            const oldEvent = (ele as any)[addKey];
+            (ele as any)[k] = (e: any) => {
+              if (oldEvent) {
+                oldEvent(e);
+              }
+              obj(e);
+            };
           } else {
             if (k[0] === "-") {
               const attrKey = k.replace("-", "");
@@ -128,6 +97,54 @@ const DOM: typeof IStay & ElePrototypeOptions = (
           }
         }
       });
+
+      // 实现 useOb逻辑
+      const _useState = props["useState"];
+      if (_useState) {
+        let appendCache: any;
+        let memoCache: any;
+        const _useChildren = props["useChildren"];
+        if (typeof _useChildren === "function") {
+          appendCache = _useChildren();
+        }
+        const _useMemo = props["useMemo"];
+        if (typeof _useMemo === "function") {
+          memoCache = _useMemo();
+        }
+        _useState.forEach((ob: any) => {
+          ob.subscribeElement(() => {
+            if (_useChildren) {
+              let nextCache = _useChildren();
+              for (let i = 0; i < nextCache.length; i++) {
+                if (nextCache[i] !== appendCache[i]) {
+                  fixChildren(ele, children);
+                  break;
+                }
+              }
+              appendCache = nextCache;
+            }
+            if (_useMemo) {
+              let nextCache = _useMemo();
+              for (let i = 0; i < nextCache.length; i++) {
+                if (nextCache[i] !== memoCache[i]) {
+                  fns.forEach((fn) => fn());
+                  break;
+                }
+              }
+              memoCache = nextCache;
+            } else {
+              fns.forEach((fn) => fn());
+            }
+          })(ele);
+        });
+      }
+      const _useRef = props["useRef"];
+
+      if (typeof _useRef === "function") {
+        _useRef(ele);
+      } else if (_useRef) {
+        _useRef.forEach((fn: any) => fn(ele));
+      }
     }
   }
 

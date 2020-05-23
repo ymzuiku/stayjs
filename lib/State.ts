@@ -1,4 +1,4 @@
-export default function state<T, V>(initVal: T & V[]) {
+export default function State<T>(initVal: T) {
   const fns = new Set();
 
   const obj = {

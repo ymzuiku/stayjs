@@ -865,6 +865,108 @@ interface EventOptions {
   [key: string]: any;
 }
 
+interface AddEventOptions extends EventOptions {
+  addabort?: (ev: HTMLElementEventMap["abort"]) => any;
+  addanimationcancel?: (ev: HTMLElementEventMap["animationcancel"]) => any;
+  addanimationend?: (ev: HTMLElementEventMap["animationend"]) => any;
+  addanimationiteration?: (
+    ev: HTMLElementEventMap["animationiteration"]
+  ) => any;
+  addanimationstart?: (ev: HTMLElementEventMap["animationstart"]) => any;
+  addauxclick?: (ev: HTMLElementEventMap["auxclick"]) => any;
+  addblur?: (ev: HTMLInputEvent) => any;
+  addcancel?: (ev: HTMLElementEventMap["cancel"]) => any;
+  addcanplay?: (ev: HTMLElementEventMap["canplay"]) => any;
+  addcanplaythrough?: (ev: HTMLElementEventMap["canplaythrough"]) => any;
+  addchange?: (ev: HTMLInputEvent) => any;
+  addclick?: (ev: HTMLElementEventMap["click"]) => any;
+  addclose?: (ev: HTMLElementEventMap["close"]) => any;
+  addcontextmenu?: (ev: HTMLElementEventMap["contextmenu"]) => any;
+  addcopy?: (ev: HTMLElementEventMap["copy"]) => any;
+  addcuechange?: (ev: HTMLElementEventMap["cuechange"]) => any;
+  addcut?: (ev: HTMLElementEventMap["cut"]) => any;
+  adddblclick?: (ev: HTMLElementEventMap["dblclick"]) => any;
+  adddrag?: (ev: HTMLElementEventMap["drag"]) => any;
+  adddragend?: (ev: HTMLElementEventMap["dragend"]) => any;
+  adddragenter?: (ev: HTMLElementEventMap["dragenter"]) => any;
+  adddragexit?: (ev: HTMLElementEventMap["dragexit"]) => any;
+  adddragleave?: (ev: HTMLElementEventMap["dragleave"]) => any;
+  adddragover?: (ev: HTMLElementEventMap["dragover"]) => any;
+  adddragstart?: (ev: HTMLElementEventMap["dragstart"]) => any;
+  adddrop?: (ev: HTMLElementEventMap["drop"]) => any;
+  adddurationchange?: (ev: HTMLElementEventMap["durationchange"]) => any;
+  addemptied?: (ev: HTMLElementEventMap["emptied"]) => any;
+  addended?: (ev: HTMLElementEventMap["ended"]) => any;
+  adderror?: (ev: HTMLElementEventMap["error"]) => any;
+  addfocus?: (ev: HTMLInputEvent) => any;
+  addfocusin?: (ev: HTMLElementEventMap["focusin"]) => any;
+  addfocusout?: (ev: HTMLElementEventMap["focusout"]) => any;
+  addfullscreenchange?: (ev: HTMLElementEventMap["fullscreenchange"]) => any;
+  addfullscreenerror?: (ev: HTMLElementEventMap["fullscreenerror"]) => any;
+  addgotpointercapture?: (ev: HTMLElementEventMap["gotpointercapture"]) => any;
+  addinput?: (ev: HTMLInputEvent) => any;
+  addinvalid?: (ev: HTMLElementEventMap["invalid"]) => any;
+  addkeydown?: (ev: HTMLElementEventMap["keydown"]) => any;
+  addkeypress?: (ev: HTMLElementEventMap["keypress"]) => any;
+  addkeyup?: (ev: HTMLElementEventMap["keyup"]) => any;
+  addload?: (ev: HTMLElementEventMap["load"]) => any;
+  addloadeddata?: (ev: HTMLElementEventMap["loadeddata"]) => any;
+  addloadedmetadata?: (ev: HTMLElementEventMap["loadedmetadata"]) => any;
+  addloadstart?: (ev: HTMLElementEventMap["loadstart"]) => any;
+  addlostpointercapture?: (
+    ev: HTMLElementEventMap["lostpointercapture"]
+  ) => any;
+  addmousedown?: (ev: HTMLElementEventMap["mousedown"]) => any;
+  addmouseenter?: (ev: HTMLElementEventMap["mouseenter"]) => any;
+  addmouseleave?: (ev: HTMLElementEventMap["mouseleave"]) => any;
+  addmousemove?: (ev: HTMLElementEventMap["mousemove"]) => any;
+  addmouseout?: (ev: HTMLElementEventMap["mouseout"]) => any;
+  addmouseover?: (ev: HTMLElementEventMap["mouseover"]) => any;
+  addmouseup?: (ev: HTMLElementEventMap["mouseup"]) => any;
+  addpaste?: (ev: HTMLElementEventMap["paste"]) => any;
+  addpause?: (ev: HTMLElementEventMap["pause"]) => any;
+  addplay?: (ev: HTMLElementEventMap["play"]) => any;
+  addplaying?: (ev: HTMLElementEventMap["playing"]) => any;
+  addpointercancel?: (ev: HTMLElementEventMap["pointercancel"]) => any;
+  addpointerdown?: (ev: HTMLElementEventMap["pointerdown"]) => any;
+  addpointerenter?: (ev: HTMLElementEventMap["pointerenter"]) => any;
+  addpointerleave?: (ev: HTMLElementEventMap["pointerleave"]) => any;
+  addpointermove?: (ev: HTMLElementEventMap["pointermove"]) => any;
+  addpointerout?: (ev: HTMLElementEventMap["pointerout"]) => any;
+  addpointerover?: (ev: HTMLElementEventMap["pointerover"]) => any;
+  addpointerup?: (ev: HTMLElementEventMap["pointerup"]) => any;
+  addprogress?: (ev: HTMLElementEventMap["progress"]) => any;
+  addratechange?: (ev: HTMLElementEventMap["ratechange"]) => any;
+  addreset?: (ev: HTMLElementEventMap["reset"]) => any;
+  addresize?: (ev: HTMLElementEventMap["resize"]) => any;
+  addscroll?: (ev: HTMLElementEventMap["scroll"]) => any;
+  addsecuritypolicyviolation?: (
+    ev: HTMLElementEventMap["securitypolicyviolation"]
+  ) => any;
+  addseeked?: (ev: HTMLElementEventMap["seeked"]) => any;
+  addseeking?: (ev: HTMLElementEventMap["seeking"]) => any;
+  addselect?: (ev: HTMLElementEventMap["select"]) => any;
+  addselectionchange?: (ev: HTMLElementEventMap["selectionchange"]) => any;
+  addselectstart?: (ev: HTMLElementEventMap["selectstart"]) => any;
+  addstalled?: (ev: HTMLElementEventMap["stalled"]) => any;
+  addsubmit?: (ev: HTMLElementEventMap["submit"]) => any;
+  addsuspend?: (ev: HTMLElementEventMap["suspend"]) => any;
+  addtimeupdate?: (ev: HTMLElementEventMap["timeupdate"]) => any;
+  addtoggle?: (ev: HTMLElementEventMap["toggle"]) => any;
+  addtouchcancel?: (ev: HTMLElementEventMap["touchcancel"]) => any;
+  addtouchend?: (ev: HTMLElementEventMap["touchend"]) => any;
+  addtouchmove?: (ev: HTMLElementEventMap["touchmove"]) => any;
+  addtouchstart?: (ev: HTMLElementEventMap["touchstart"]) => any;
+  addtransitioncancel?: (ev: HTMLElementEventMap["transitioncancel"]) => any;
+  addtransitionend?: (ev: HTMLElementEventMap["transitionend"]) => any;
+  addtransitionrun?: (ev: HTMLElementEventMap["transitionrun"]) => any;
+  addtransitionstart?: (ev: HTMLElementEventMap["transitionstart"]) => any;
+  addvolumechange?: (ev: HTMLElementEventMap["volumechange"]) => any;
+  addwaiting?: (ev: HTMLElementEventMap["waiting"]) => any;
+  addwheel?: (ev: HTMLElementEventMap["wheel"]) => any;
+  [key: string]: any;
+}
+
 type _AnyFn = (e: any) => any;
 type AnyGet = _AnyFn | any;
 
@@ -880,7 +982,11 @@ type BoolGet = _BoolFn | boolean;
 type _StyleFn = (e: any) => IStyle;
 type StyleGet = _StyleFn | IStyle;
 
-export interface IProps extends EventOptions {
+type RefOne = (e: HTMLElement) => any;
+type RefList = ((e: HTMLElement) => any)[];
+
+export interface IProps extends AddEventOptions {
+  useRef?: RefOne | RefList;
   useState?: any[];
   useChildren?: () => any[];
   useMemo?: () => any[];
