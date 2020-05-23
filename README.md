@@ -63,6 +63,12 @@ document.body.append(Box());
 
 El type like: `El(Element|string, Props|className|children, children|()=>children)=>Element`
 
+We use State:
+
+`useState:[state]`: subject state's update, if element is remove, auto unsubject.
+
+`state.update`: update all subject's element
+
 ```js
 import { El, State } from "stayjs";
 
@@ -220,6 +226,43 @@ function PageB() {
 
 document.body.append(PageA(), PageB());
 ```
+
+## useMemo
+
+`stayjs` is high performance，we can controll useState's state. and we can use `useMemo` intercept detail update.
+
+This example, `h1` is no rerender, because it useMemo's data no change.
+
+```js
+import { El, State } from "stayjs";
+
+function Box() {
+  const state = State({
+    name: "Alex",
+    age: 10,
+  });
+
+  return El("div", [
+    El("h1", {
+      useState: [state],
+      useMemo: (val) => [val.name],
+      textContent: () => state.val.name,
+    }),
+    El("h2", {
+      useState: [state],
+      useMemo: (val) => [val.age],
+      textContent: () => state.val.age,
+    }),
+    El("button", { onClick: () => state.update((val) => val.age++) }, [
+      "touch me, change age",
+    ]),
+  ]);
+}
+
+document.body.append(Box());
+```
+
+# Ecology
 
 ## Router
 
