@@ -6,12 +6,12 @@ type IElementCallback = (ele: HTMLElement) => unknown;
 type Children = (HTMLElement | string | number | undefined | boolean)[];
 type RenderChildren = () => Children;
 
-declare function IStay<T extends Element>(
+declare function IEl<T extends Element>(
   tagName: T,
   props?: IElementCallback | IProps | string | Children,
   children?: RenderChildren | Children
 ): T;
-declare function IStay<K extends keyof HTMLElementTagNameMap>(
+declare function IEl<K extends keyof HTMLElementTagNameMap>(
   tagName: K,
   props?: IElementCallback | IProps | string | Children,
   children?: RenderChildren | Children
@@ -28,7 +28,7 @@ const ignoreProp = {
   useRef: 1,
 };
 
-const DOM: typeof IStay & ElePrototypeOptions = (
+const El: typeof IEl & ElePrototypeOptions = (
   tagName: any,
   props: any,
   children: any
@@ -159,4 +159,4 @@ const DOM: typeof IStay & ElePrototypeOptions = (
   return ele;
 };
 
-export default DOM;
+export default El;

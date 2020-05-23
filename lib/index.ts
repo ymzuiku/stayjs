@@ -1,6 +1,6 @@
-import DOM from "./DOM";
+import El from "./El";
 import State from "./State";
 import fixAttr from "./fixAttr";
 import fixChildren from "./fixChildren";
 
-export { DOM, State, fixAttr, fixChildren };
+export { El, State, fixAttr, fixChildren };
