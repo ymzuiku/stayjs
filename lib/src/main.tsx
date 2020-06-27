@@ -4,24 +4,24 @@ import { El, State } from "./stayjs";
 import Other from "./other";
 
 function Box() {
-  const label = El("h1");
   const state = State({ age: 10, list: [] as any });
 
   return El("div", { state }, [
-    () => {
-      console.log("aaa");
-      return state.age > 13 && El(label, { state, textContent: state.age });
-    },
+    // () => {
+    //   console.log("aaa");
+    //   return state.age > 13 && El(label, { state, textContent: state.age });
+    // },
     El(
       "div",
       {
-        className: "bg-indigo-500",
+        class: "bg-yellow-500",
         onclick: () => {
           state.update((s) => (s.age += 1));
           state.update((s) => s.list.push("aa"));
         },
+        state,
       },
-      ["add"]
+      [() => state.age + "add"]
     ),
     El(
       "div",
@@ -43,14 +43,17 @@ function Box() {
       ["flavorcss"]
     ),
     El("div", [Other()]),
-    El("button", {
-      state,
-      className: () => [state.age > 13 && "none"].join(" "),
-      onclick: () => {
-        console.log("aaa");
+    El(
+      "button",
+      {
+        state,
+        className: () => [state.age > 13 && "none"].join(" "),
+        onclick: () => {
+          console.log("aaa");
+        },
       },
-      textContent: "run anime",
-    }),
+      ["run anime"]
+    ),
   ]);
 }
 const rootApp = document.getElementById("app")!;

@@ -65,7 +65,7 @@ El type like: `El(Element|string, Props|className|children, children|()=>childre
 
 We use State:
 
-`$bind:[state]`: subject state's update, if element is remove, auto unsubject.
+`state:[state]`: subject state's update, if element is remove, auto unsubject.
 
 `state.update`: update all subject's element
 
@@ -79,8 +79,8 @@ function Box() {
   });
 
   return El("div", [
-    El("h1", { $bind: [state], textContent: () => state.val.name }),
-    El("h2", { $bind: [state], textContent: () => state.val.age }),
+    El("h1", { state, textContent: () => state.val.name }),
+    El("h2", { state, textContent: () => state.val.age }),
     El("button", { onClick: () => state.update((val) => val.age++) }, [
       "touch me, change age",
     ]),
@@ -101,7 +101,7 @@ function Box() {
   });
 
   return El("div", [
-    El("p", { $bind: [state], textContent: () => state.val.text }),
+    El("p", { state, textContent: () => state.val.text }),
     El("input", {
       oninput: (e) => state.update((val) => (val.text = e.target.value)),
     }),
@@ -166,29 +166,21 @@ function Box() {
 document.body.append(Box());
 ```
 
-## Map Render List
+## Map Render Children
 
-We can add `$append: () => [state.val.length]` in Element, when state change and $append callback's value change, stayjs can help you update list.
-
-When stayjs update list, stayjs only update new item, or delete item. There have hight performent at big list screen.
-
-and children we need use `()=>[Element, Element]` replace `[Element, Element]`
+Children when update rerender, we need use `()=>[()=>Element, Element]` replace `[Element, Element]`
 
 ```js
 import { El, State } from "stayjs";
 
 function Box() {
-  const state = State(["dog", "cat", "fish"]);
+  const state = State({ age: 10 });
 
-  return El("div", { $append: () => state.val.length }, () => [
-    El("p", { textContent: "input change list:" }),
-    El("button", { onclick: () => state.update(() => (state.val = [])) }, [
+  return El("div", { state }, () => [
+    El("button", { onclick: () => state.update(() => (state.age += 1)) }, [
       "Clear list",
     ]),
-    El("input", {
-      oninput: (e) => state.update((val) => val.push(e.target.value)),
-    }),
-    ...state.val.map((label) => El("p", [label])),
+    () => El("div", [state.age]),
   ]);
 }
 
@@ -208,7 +200,7 @@ const state = State({
 
 function PageA() {
   return El("div", [
-    El("p", { $bind: [state], textContent: () => state.val.text }),
+    El("p", { state, textContent: () => state.val.text }),
     El("input", {
       oninput: (e) => state.update((val) => (val.text = e.target.value)),
     }),
@@ -217,7 +209,7 @@ function PageA() {
 
 function PageB() {
   return El("div", [
-    El("p", { $bind: [state], textContent: () => state.val.text }),
+    El("p", { state, textContent: () => state.val.text }),
     El("input", {
       oninput: (e) => state.update((val) => (val.text = e.target.value)),
     }),
@@ -229,9 +221,9 @@ document.body.append(PageA(), PageB());
 
 ## Like react useMemo
 
-`stayjs` is high performance，we can controll $bind's state. and we can use `$memo` intercept detail update.
+`stayjs` is high performance，we can controll state's state. and we can use `memo` intercept detail update.
 
-This example, `h1` is no rerender, because it $memo's data no change.
+This example, `h1` is no rerender, because it memo's data no change.
 
 ```js
 import { El, State } from "stayjs";
@@ -244,13 +236,13 @@ function Box() {
 
   return El("div", [
     El("h1", {
-      $bind: [state],
-      $memo: (val) => [val.name],
+      state: [state],
+      memo: (val) => [val.name],
       textContent: () => state.val.name,
     }),
     El("h2", {
-      $bind: [state],
-      $memo: (val) => [val.age],
+      state: [state],
+      memo: (val) => [val.age],
       textContent: () => state.val.age,
     }),
     El("button", { onClick: () => state.update((val) => val.age++) }, [
@@ -280,7 +272,7 @@ const state = State({
 
 function PageA() {
   return El("div", [
-    El("p", { $bind: [state], textContent: () => state.val.text }),
+    El("p", { state: [state], textContent: () => state.val.text }),
     El("input", {
       oninput: (e) => state.update((val) => (val.text = e.target.value)),
     }),
@@ -289,7 +281,7 @@ function PageA() {
 
 function PageB() {
   return El("div", [
-    El("p", { $bind: [state], textContent: () => state.val.text }),
+    El("p", { state: [state], textContent: () => state.val.text }),
     El("input", {
       oninput: (e) => state.update((val) => (val.text = e.target.value)),
     }),

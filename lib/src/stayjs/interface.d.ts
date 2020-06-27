@@ -994,6 +994,7 @@ export interface IProps extends AddEventOptions {
   [key: string]: any;
   [index: number]: any;
   className?: StringGet;
+  class?: StringGet;
   cssText?: StringGet;
   style?: StyleGet;
   textContent?: AnyGet;

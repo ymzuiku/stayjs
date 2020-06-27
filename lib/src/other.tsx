@@ -1,20 +1,65 @@
-import { El, State, html } from "./stayjs";
+import { State } from "./stayjs";
+import html from "./stayjs/html";
+
+function Dog({
+  name,
+  age,
+  children,
+}: {
+  name: string;
+  age: number;
+  children: any;
+}) {
+  return html`<main>
+    <h1>name:${name}</h1>
+    <p>age:${age}</p>
+    ${children}
+  </main>`;
+}
+
+function Cat({
+  name,
+  age,
+  render,
+}: {
+  name: string;
+  age: number;
+  render: any;
+}) {
+  return html`<main>
+    <h1>name:${name}</h1>
+    <p>age:${age}</p>
+    ${render("aaaaaaa")}
+  </main>`;
+}
 
 function Other() {
-  const label = El("h1");
   const state = State({
     name: "dog",
     age: 20,
   });
 
   return html`<div>
-    <h1>${() => state.name}</h1>
-    <h1 state=${state}>
+    <style>
+      .box {
+        background: #f00;
+      }
+    </style>
+    <h1 state=${state} memo=${() => [state.name]} id="state-age">
       hello-${() => {
         console.log("load");
         return state.age;
       }}
     </h1>
+    ${() =>
+      state.age > 12 &&
+      html`<${Dog} name="dog" age="100">
+      <div class="box">hello children</div>
+    </${Dog}>`}
+    <${Cat}
+      render=${(text: string) => html`<div class="bg-blue-500">${text}</div>`}
+    />
+    <p class="bg-green-600" state=${state} textContent=${() => state.age}></p>
     <button
       onclick=${() => {
         console.log("aaaaaa");

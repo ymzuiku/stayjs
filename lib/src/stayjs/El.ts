@@ -16,15 +16,22 @@ declare function IEl<T extends Element>(
   props?: IElementCallback | IProps | string | Children,
   children?: Children
 ): T;
+
+declare function IEl<T extends Element>(
+  tagName: Function,
+  props?: IElementCallback | IProps | string | Children,
+  children?: Children
+): T;
+
 declare function IEl<K extends keyof HTMLElementTagNameMap>(
   tagName: K,
   props?: IElementCallback | IProps | string | Children,
   children?: Children
 ): HTMLElementTagNameMap[K];
 
-interface ElePrototypeOptions {
-  // state: typeof state;
-}
+// interface ElePrototypeOptions {
+//   // state: typeof state;
+// }
 
 const ignoreProp = {
   state: 1,
@@ -32,24 +39,38 @@ const ignoreProp = {
   ref: 1,
 };
 
-const El: typeof IEl & ElePrototypeOptions = function (
-  tagName: any,
-  props: any,
-  children: any
-) {
+function mkChild(sub: any, el: any) {
+  if (el && el.tagName && el.tagName === "style") {
+    if (typeof sub === "number" || typeof sub === "string") {
+      let a = sub;
+      sub = document.createElement("span");
+      sub.textContent = a;
+    } else if (sub === undefined) {
+      sub = document.createElement("span");
+    }
+  }
+  return sub;
+}
+
+const El: typeof IEl = function (tagName: any, props: any, children: any) {
   let ele: HTMLElement = tagName;
   if (typeof tagName === "string") {
     ele = document.createElement(tagName);
+  } else if (typeof tagName === "function") {
+    if (props && children) {
+      props.children = children;
+    }
+    return tagName(props);
   }
 
   let fns: any;
-  let needReChilds: any;
+  let fnchilds: any;
   let state = props && props["state"];
   let onDestory: Function;
   if (state) {
     onDestory = function () {
       fns = null;
-      needReChilds = null;
+      fnchilds = null;
       onDestory = null as any;
     };
   }
@@ -59,46 +80,53 @@ const El: typeof IEl & ElePrototypeOptions = function (
         fns[k]();
       });
     }
-    if (needReChilds) {
-      Object.keys(needReChilds).forEach(function (k) {
-        const [run, el] = needReChilds[k];
+    if (fnchilds) {
+      Object.keys(fnchilds).forEach(function (k) {
+        const [run, el] = fnchilds[k];
         if (el.parentElement) {
-          const sub = run() || document.createElement("span");
+          const sub = mkChild(run(), el.parentElement);
           el.parentElement.replaceChild(sub, el);
-          needReChilds[k] = [run, sub];
+          fnchilds[k] = [run, sub];
         }
       });
     }
   };
 
-  let endChilds = [];
+  let appendList: any[] = [];
   let isArrayProps = Array.isArray(props);
   if (props && isArrayProps) {
     children = props;
   }
 
-  if (children && children.length) {
-    for (let i = 0; i < children.length; i++) {
-      if (children[i]) {
-        if (children[i].__token) {
-          endChilds.push(
-            El(children[i].tag, children[i].props, children[i].children)
-          );
-        } else if (typeof children[i] === "function") {
-          const sub = children[i]() || document.createElement("span");
-          if (props && props.state) {
-            if (!needReChilds) {
-              needReChilds = {};
+  const expchild = function (childs: any) {
+    if (childs && childs.length) {
+      for (let i = 0; i < childs.length; i++) {
+        if (Array.isArray(childs[i])) {
+          expchild(childs[i]);
+          return;
+        }
+        if (childs[i]) {
+          if (childs[i].__token) {
+            appendList.push(
+              El(childs[i].tag, childs[i].props, childs[i].children)
+            );
+          } else if (typeof childs[i] === "function") {
+            const sub = mkChild(childs[i](), ele);
+            if (props && props.state) {
+              if (!fnchilds) {
+                fnchilds = {};
+              }
+              fnchilds[i] = [childs[i], sub];
             }
-            needReChilds[i] = [children[i], sub];
+            appendList.push(sub);
+          } else {
+            appendList.push(childs[i]);
           }
-          endChilds.push(sub);
-        } else {
-          endChilds.push(children[i]);
         }
       }
     }
-  }
+  };
+  expchild(children);
 
   if (props) {
     if (typeof props === "string") {
@@ -137,6 +165,10 @@ const El: typeof IEl & ElePrototypeOptions = function (
               fns[k] = function () {
                 ele.style.cssText = obj();
               };
+            } else if (k === "class") {
+              fns[k] = function () {
+                ele.className = obj();
+              };
             } else if (k === "style") {
               fns[k] = function () {
                 const styleList = obj();
@@ -152,6 +184,9 @@ const El: typeof IEl & ElePrototypeOptions = function (
             }
           }
         } else {
+          if (k === "class") {
+            ele.className = obj;
+          }
           if (k === "cssText") {
             ele.style.cssText = obj;
           } else if (k === "style") {
@@ -171,14 +206,14 @@ const El: typeof IEl & ElePrototypeOptions = function (
           state = [state];
         }
         let memoCache: any;
-        const $memo = props["$memo"];
-        if (typeof $memo === "function") {
-          memoCache = $memo();
+        const memo = props["memo"];
+        if (typeof memo === "function") {
+          memoCache = memo();
         }
         state.forEach(function (ob: any) {
           ob.__subscribeElement(function () {
-            if ($memo) {
-              let nextCache = $memo();
+            if (memo) {
+              let nextCache = memo();
               for (let i = 0; i < nextCache.length; i++) {
                 if (nextCache[i] !== memoCache[i]) {
                   onUpdate();
@@ -204,8 +239,8 @@ const El: typeof IEl & ElePrototypeOptions = function (
       }
     }
   }
-  if (endChilds.length) {
-    ele.append(...endChilds);
+  if (appendList.length) {
+    ele.append(...appendList);
   }
 
   onUpdate();
