@@ -1,6 +1,6 @@
 import "flavorcss";
 
-import { El, State } from "./stayjs";
+import { El, State } from "./lib";
 import Other from "./other";
 
 function Box() {

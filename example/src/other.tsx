@@ -1,5 +1,5 @@
-import { State } from "./stayjs";
-import html from "./stayjs/html";
+import { State } from "./lib";
+import html from "./lib/html";
 
 function Dog({
   name,
@@ -47,7 +47,6 @@ function Other() {
     </style>
     <h1 state=${state} memo=${() => [state.name]} id="state-age">
       hello-${() => {
-        console.log("load");
         return state.age;
       }}
     </h1>
