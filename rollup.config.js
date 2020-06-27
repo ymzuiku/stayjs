@@ -16,6 +16,8 @@ function clearDir(dir) {
     });
   }
 }
+fs.removeSync("./lib");
+fs.copySync("./example/src/lib", "./lib");
 function haveArgv(...args) {
   let isHave = false;
   args.forEach((str) => {
@@ -38,26 +40,6 @@ const watchOptions = [
       file: "./umd/index.js",
       format: "umd",
       name: "stayjs",
-      sourcemap: true,
-      // globals: {
-      //   keyframesSpring: 'keyframes-spring',
-      // },
-    },
-    plugins: [
-      rollupTypescript({
-        useTsconfigDeclarationDir: false,
-      }),
-      uglify({
-        sourcemap: true,
-      }),
-    ],
-  },
-  {
-    input: "./lib/html.ts",
-    output: {
-      file: "./umd/html.js",
-      format: "umd",
-      name: "html",
       sourcemap: true,
       // globals: {
       //   keyframesSpring: 'keyframes-spring',

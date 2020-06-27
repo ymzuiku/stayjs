@@ -11,16 +11,12 @@ function h(tag: any, props: any, ...children: any[]) {
   };
 }
 
-export function isElement(obj: any) {
-  return Object.prototype.toString.call(obj).indexOf("lement") > 0;
-}
-
 export const htmlParser = htm.bind(h);
 
 const html = <T extends HTMLElement>(
   str: TemplateStringsArray,
   ...values: any[]
-): { [key: string]: T } => {
+): T | T[] => {
   let token: any = htmlParser(str, ...values);
   return El(token.tag, token.props, token.children);
 };

@@ -11,6 +11,10 @@ type Children = (
   | Function
 )[];
 
+// export function isElement(obj: any) {
+//   return Object.prototype.toString.call(obj).indexOf("lement") > 0;
+// }
+
 declare function IEl<T extends Element>(
   tagName: T,
   props?: IElementCallback | IProps | string | Children,
@@ -40,7 +44,7 @@ const ignoreProp = {
 };
 
 function mkChild(sub: any, el: any) {
-  if (el && el.tagName && el.tagName === "style") {
+  if (el && el.tagName && el.tagName !== "style") {
     if (typeof sub === "number" || typeof sub === "string") {
       let a = sub;
       sub = document.createElement("span");
@@ -53,6 +57,10 @@ function mkChild(sub: any, el: any) {
 }
 
 const El: typeof IEl = function (tagName: any, props: any, children: any) {
+  if (props && props["extend"]) {
+    tagName = props["extend"];
+    delete props["extend"];
+  }
   let ele: HTMLElement = tagName;
   if (typeof tagName === "string") {
     ele = document.createElement(tagName);
@@ -100,6 +108,7 @@ const El: typeof IEl = function (tagName: any, props: any, children: any) {
 
   const expchild = function (childs: any) {
     if (childs && childs.length) {
+
       for (let i = 0; i < childs.length; i++) {
         if (Array.isArray(childs[i])) {
           expchild(childs[i]);
@@ -156,12 +165,7 @@ const El: typeof IEl = function (tagName: any, props: any, children: any) {
               obj(e);
             };
           } else {
-            if (k[0] === "-") {
-              const attrKey = k.replace("-", "");
-              fns[k] = function () {
-                fixAttr(attrKey, obj());
-              };
-            } else if (k === "cssText") {
+            if (k === "cssText") {
               fns[k] = function () {
                 ele.style.cssText = obj();
               };
@@ -177,6 +181,10 @@ const El: typeof IEl = function (tagName: any, props: any, children: any) {
                   (ele as any).style[styKey] = styleList[styKey];
                 });
               };
+            } else if (k.indexOf("-") > 0) {
+              fns[k] = function () {
+                fixAttr(k, obj());
+              };
             } else {
               fns[k] = function () {
                 (ele as any)[k] = obj();
@@ -186,14 +194,15 @@ const El: typeof IEl = function (tagName: any, props: any, children: any) {
         } else {
           if (k === "class") {
             ele.className = obj;
-          }
-          if (k === "cssText") {
+          } else if (k === "cssText") {
             ele.style.cssText = obj;
           } else if (k === "style") {
             const styles = Object.keys(obj);
             styles.forEach(function (styKey) {
               (ele as any).style[styKey] = obj[styKey];
             });
+          } else if (k.indexOf("-") > 0) {
+            fixAttr(k, obj);
           } else {
             (ele as any)[k] = obj;
           }
@@ -228,7 +237,7 @@ const El: typeof IEl = function (tagName: any, props: any, children: any) {
           }, onDestory)(ele);
         });
       }
-      const _useRef = props["$ref"];
+      const _useRef = props["ref"];
 
       if (typeof _useRef === "function") {
         _useRef(ele);

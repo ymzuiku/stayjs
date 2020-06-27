@@ -1,4 +1,5 @@
 import El from "./El";
 import State from "./State";
 import fixAttr from "./fixAttr";
-export { El, State, fixAttr };
+import html from "./html";
+export { El, State, fixAttr, html };

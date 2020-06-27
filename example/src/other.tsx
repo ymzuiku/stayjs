@@ -10,11 +10,15 @@ function Dog({
   age: number;
   children: any;
 }) {
-  return html`<main>
-    <h1>name:${name}</h1>
-    <p>age:${age}</p>
-    ${children}
-  </main>`;
+  // console.log(children);
+  return html`
+    <span>
+      <h1>name:${name}</h1>
+      <p>age:${age}</p>
+      ${children}
+      <!-- <tag *=${children}></tag> -->
+    </span>
+  `;
 }
 
 function Cat({
@@ -26,11 +30,12 @@ function Cat({
   age: number;
   render: any;
 }) {
-  return html`<main>
-    <h1>name:${name}</h1>
-    <p>age:${age}</p>
-    ${render("aaaaaaa")}
-  </main>`;
+  return html`
+    <span>
+      <h1>name:${name}</h1>
+      <p>age:${age}</p>
+    </span>
+  `;
 }
 
 function Other() {
@@ -39,35 +44,30 @@ function Other() {
     age: 20,
   });
 
-  return html`<div>
-    <style>
-      .box {
-        background: #f00;
-      }
-    </style>
-    <h1 state=${state} memo=${() => [state.name]} id="state-age">
-      hello-${() => {
-        return state.age;
-      }}
-    </h1>
-    ${() =>
-      state.age > 12 &&
-      html`<${Dog} name="dog" age="100">
-      <div class="box">hello children</div>
-    </${Dog}>`}
-    <${Cat}
-      render=${(text: string) => html`<div class="bg-blue-500">${text}</div>`}
-    />
-    <p class="bg-green-600" state=${state} textContent=${() => state.age}></p>
-    <button
-      onclick=${() => {
-        console.log("aaaaaa");
-        state.update((s) => (s.age += 1));
-      }}
-    >
-      button
-    </button>
-  </div>`;
+  return html`
+    <div>
+      <h1 state=${state} memo=${() => [state.age]} id="state-age">
+        hello-${() => {
+          return state.age;
+        }}
+      </h1>
+      <em extend=${Dog} name="dog" age="100">
+        <div>hello children</div>
+      </em>
+      <em extend=${Cat} name="cat">
+        <div>hello-cat</div>
+      </em>
+      <p class="bg-green-600" state=${state}>${() => state.age}</p>
+      <button
+        onclick=${() => {
+          console.log("on click");
+          state.update((s) => (s.age += 1));
+        }}
+      >
+        button
+      </button>
+    </div>
+  `;
 }
 
 export default Other;
