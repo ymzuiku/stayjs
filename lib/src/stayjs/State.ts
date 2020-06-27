@@ -1,30 +1,33 @@
 export default function State<T>(initVal: T) {
   const fns = new Set();
   const obj = {
-    val: initVal,
-    next: () => {
+    ...initVal,
+    __next: () => {
       requestAnimationFrame(() => {
-        fns.forEach((fn: any) => fn(obj.val));
+        fns.forEach((fn: any) => fn(obj));
       });
     },
     update: (fn: (v: T) => any) => {
-      fn(obj.val);
-      obj.next();
+      fn(obj);
+      obj.__next();
     },
-    subscribe: (fn: (v: T) => any) => {
+    __subscribe: (fn: (v: T) => any) => {
       fns.add(fn);
     },
-    subscribeElement: (fn: (v: T) => any) => {
+    __subscribeElement: (fn: (v: T) => any, onDestroy?: Function) => {
       return (el: any) => {
         function update(v: any) {
           if (!document.contains(el)) {
             el = null;
             fns.delete(update);
+            if (onDestroy) {
+              onDestroy();
+            }
           }
           fn(v);
         }
-        fn(obj.val);
-        obj.subscribe(update);
+        fn(obj);
+        obj.__subscribe(update);
       };
     },
   };

@@ -1,6 +1,7 @@
 import El from "./El";
 import State from "./State";
 import fixAttr from "./fixAttr";
-import fixChildren from "./fixChildren";
+import html from "./html";
+// import fixChildren from "./fixChildren";
 
-export { El, State, fixAttr, fixChildren };
+export { El, State, fixAttr, html };
