@@ -20,7 +20,8 @@
     "declaration": true,
     "outDir": "./umd",
     "declarationDir": "./",
-    "jsx": "react"
+    "jsxFactory": "h",
+    "jsx": "preserve"
   },
   "exclude": ["node_modules", "umd"],
   "include": ["lib"]
