@@ -1,7 +1,6 @@
-export default function State<T>(initVal: T): {
-    val: T;
-    next: () => void;
+export default function State<T>(initVal: T): T & {
+    __next: () => void;
     update: (fn: (v: T) => any) => void;
-    subscribe: (fn: (v: T) => any) => void;
-    subscribeElement: (fn: (v: T) => any) => (el: any) => void;
+    __subscribe: (fn: (v: T) => any) => void;
+    __subscribeElement: (fn: (v: T) => any, onDestroy?: Function | undefined) => (el: any) => void;
 };

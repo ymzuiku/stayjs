@@ -33,7 +33,7 @@ clearDir(pwd("umd"));
 
 const watchOptions = [
   {
-    input: "./lib/src/stayjs/index.ts",
+    input: "./lib/index.ts",
     output: {
       file: "./umd/index.js",
       format: "umd",
@@ -53,11 +53,11 @@ const watchOptions = [
     ],
   },
   {
-    input: "./lib/src/stayjs/html.ts",
+    input: "./lib/html.ts",
     output: {
       file: "./umd/html.js",
       format: "umd",
-      name: "stayjs",
+      name: "html",
       sourcemap: true,
       // globals: {
       //   keyframesSpring: 'keyframes-spring',
