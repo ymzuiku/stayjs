@@ -18,6 +18,11 @@ const html = <T extends HTMLElement>(
   ...values: any[]
 ): T | T[] => {
   let token: any = htmlParser(str, ...values);
+  // if (Array.isArray(token)) {
+  //   return token.map((v) => {
+  //     return El(v.tag, v.props, v.children);
+  //   });
+  // }
   return El(token.tag, token.props, token.children);
 };
 

@@ -1,4 +1,4 @@
-import "flavorcss";
+// import "flavorcss";
 
 import { El, State } from "./lib";
 import Other from "./other";
@@ -7,10 +7,9 @@ function Box() {
   const state = State({ age: 10, list: [] as any });
 
   return El("div", { state }, [
-    // () => {
-    //   console.log("aaa");
-    //   return state.age > 13 && El(label, { state, textContent: state.age });
-    // },
+    () => {
+      return state.age > 13 && El("label", { state, textContent: state.age });
+    },
     // El(
     //   "div",
     //   {
@@ -42,7 +41,11 @@ function Box() {
     //   },
     //   ["flavorcss"]
     // ),
-    El("div", [Other()]),
+    El("div", [
+      () => {
+        return Other();
+      },
+    ]),
     // El(
     //   "button",
     //   {
@@ -58,5 +61,8 @@ function Box() {
 }
 const rootApp = document.getElementById("app")!;
 rootApp.innerHTML = "";
+
+console.time("b");
 rootApp.append(Box());
+console.timeEnd("b");
 // document.body.append(Box());
