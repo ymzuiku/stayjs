@@ -1045,6 +1045,13 @@ fill-range@^7.0.1:
   dependencies:
     to-regex-range "^5.0.1"
 
+flavorcss@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/flavorcss/-/flavorcss-0.1.2.tgz#fb4ddcd562fb71e925c64fbb57b72916a397022b"
+  integrity sha512-qrE2ecwv351B5kvU9k8IMMVikFKN/veRroFB+0D8W4HGiWL1nnwzgEQ1xmtvJqb7UbGD1mGSzDga2Hkx/K6rrA==
+  dependencies:
+    prism-react-renderer "^1.1.1"
+
 follow-redirects@^1.0.0:
   version "1.12.1"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.12.1.tgz#de54a6205311b93d60398ebc01cf7015682312b6"
@@ -1885,6 +1892,11 @@ preact@^10.4.4:
   version "10.4.4"
   resolved "https://registry.yarnpkg.com/preact/-/preact-10.4.4.tgz#0bd6d759ec2f8684aaf8c63c7f076191e46528cf"
   integrity sha512-EaTJrerceyAPatQ+vfnadoopsMBZAOY7ak9ogVdUi5xbpR8SoHgtLryXnW+4mQOwt21icqoVR1brkU2dq7pEBA==
+
+prism-react-renderer@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/prism-react-renderer/-/prism-react-renderer-1.1.1.tgz#1c1be61b1eb9446a146ca7a50b7bcf36f2a70a44"
+  integrity sha512-MgMhSdHuHymNRqD6KM3eGS0PNqgK9q4QF5P0yoQQvpB6jNjeSAi3jcSAz0Sua/t9fa4xDOMar9HJbLa08gl9ug==
 
 pump@^3.0.0:
   version "3.0.0"
