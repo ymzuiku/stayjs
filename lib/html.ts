@@ -11,7 +11,7 @@ function h(tag: any, props: any, ...children: any[]) {
   };
 }
 
-export const htmlParser = htm.bind(h);
+export const htmlParser = htm.bind(h) as any;
 
 const html = <T extends HTMLElement>(
   str: TemplateStringsArray,

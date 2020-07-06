@@ -4,6 +4,7 @@ const rollup = require("rollup");
 const rollupTypescript = require("rollup-plugin-typescript2");
 const { uglify } = require("rollup-plugin-uglify");
 const { resolve } = require("path");
+const reso = require("rollup-plugin-node-resolve");
 const pwd = (...args) => resolve(process.cwd(), ...args);
 const fs = require("fs-extra");
 const argv = process.argv.splice(2);
@@ -40,17 +41,18 @@ const watchOptions = [
       file: "./umd/index.js",
       format: "umd",
       name: "stayjs",
-      sourcemap: true,
+      sourcemap: false,
       // globals: {
       //   keyframesSpring: 'keyframes-spring',
       // },
     },
     plugins: [
+      reso(),
       rollupTypescript({
         useTsconfigDeclarationDir: false,
       }),
       uglify({
-        sourcemap: true,
+        sourcemap: false,
       }),
     ],
   },

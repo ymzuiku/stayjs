@@ -1,13 +1,13 @@
 import "flavorcss";
 
-import {html} from "./lib";
+import { html } from "./lib";
 import Other from "./other";
 
 function Box() {
-    return html`
+  return html`
     <div>
       hello
-      <em extend=${Other}>
+      <em by=${Other}>
         <div>dog</div>
         <div>cat</div>
       </em>

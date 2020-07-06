@@ -8,11 +8,9 @@
   "scripts": {
     "lib": "node rollup.config.js"
   },
-  "dependencies": {
-    "htm": "^3.0.4"
-  },
   "devDependencies": {
     "rollup": "^1.24.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-typescript2": "^0.24.3",
     "rollup-plugin-uglify": "^6.0.3",
     "typescript": "3.5.2"

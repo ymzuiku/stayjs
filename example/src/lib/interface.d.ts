@@ -990,6 +990,7 @@ type RefList = ((e: HTMLElement) => any)[];
 export interface IProps extends AddEventOptions {
   ref?: RefOne | RefList;
   state?: any;
+  by?: any;
   memo?: () => any[];
   [key: string]: any;
   [index: number]: any;

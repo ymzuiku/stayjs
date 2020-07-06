@@ -57,9 +57,9 @@ function mkChild(sub: any, el: any) {
 }
 
 const El: typeof IEl = function (tagName: any, props: any, children: any) {
-  if (props && props["extend"]) {
-    tagName = props["extend"];
-    delete props["extend"];
+  if (props && props["by"]) {
+    tagName = props["by"];
+    delete props["by"];
   }
   let ele: HTMLElement = tagName;
   if (typeof tagName === "string") {
