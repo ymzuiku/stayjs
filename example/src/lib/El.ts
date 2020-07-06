@@ -249,7 +249,7 @@ const El: typeof IEl = function (tagName: any, props: any, children: any) {
   }
 
   if (appendList.length) {
-    const end = [];
+    const end = [] as any;
     appendList.forEach((v) => {
       if (Array.isArray(v)) {
         v.forEach((v2) => {

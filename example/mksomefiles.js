@@ -1,6 +1,6 @@
 const fs = require("fs-extra");
 
-const file = fs.readFileSync("./src/other.tsx");
+const file = fs.readFileSync("./src/other.ts");
 
 let str = "";
 

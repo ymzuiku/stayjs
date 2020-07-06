@@ -16,8 +16,13 @@ export const htmlParser = htm.bind(h);
 const html = <T extends HTMLElement>(
   str: TemplateStringsArray,
   ...values: any[]
-): T | T[] => {
+): T => {
   let token: any = htmlParser(str, ...values);
+  // if (Array.isArray(token)) {
+  //   return token.map((v) => {
+  //     return El(v.tag, v.props, v.children);
+  //   });
+  // }
   return El(token.tag, token.props, token.children);
 };
 

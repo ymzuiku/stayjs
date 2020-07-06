@@ -11,5 +11,5 @@ export declare const htmlParser: (strings: TemplateStringsArray, ...values: any[
     children: any[];
     key: any;
 }[];
-declare const html: <T extends HTMLElement>(str: TemplateStringsArray, ...values: any[]) => T | T[];
+declare const html: <T extends HTMLElement>(str: TemplateStringsArray, ...values: any[]) => T;
 export default html;

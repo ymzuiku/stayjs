@@ -108,7 +108,6 @@ const El: typeof IEl = function (tagName: any, props: any, children: any) {
 
   const expchild = function (childs: any) {
     if (childs && childs.length) {
-
       for (let i = 0; i < childs.length; i++) {
         if (Array.isArray(childs[i])) {
           expchild(childs[i]);
@@ -248,8 +247,19 @@ const El: typeof IEl = function (tagName: any, props: any, children: any) {
       }
     }
   }
+
   if (appendList.length) {
-    ele.append(...appendList);
+    const end = [] as any;
+    appendList.forEach((v) => {
+      if (Array.isArray(v)) {
+        v.forEach((v2) => {
+          end.push(v2);
+        });
+      } else {
+        end.push(v);
+      }
+    });
+    ele.append(...end);
   }
 
   onUpdate();

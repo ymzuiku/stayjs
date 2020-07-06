@@ -8,7 +8,7 @@ We love sevlte's design, bu we love JS/TS more, not .sevlte.
 
 ## Faster!!!
 
-`stayjs` Size: no gizp 2k.
+`stayjs` Size: no gizp 4k.
 
 And like sevlte, no need diff VDOM, we only use Observer/Subject update dom. you can go back native js create all your feature.
 
