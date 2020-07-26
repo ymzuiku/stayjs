@@ -2,14 +2,9 @@ import { IProps } from "./interface";
 import fixAttr from "./fixAttr";
 
 type IElementCallback = (ele: HTMLElement) => unknown;
-type Children = (
-  | HTMLElement
-  | string
-  | number
-  | undefined
-  | boolean
-  | Function
-)[];
+type ChildrenList = (HTMLElement | string | number | undefined | boolean | Function)[];
+type ChildrenFn = () => (HTMLElement | string | number | undefined | boolean | Function)[];
+type Children = ChildrenList | ChildrenFn;
 
 // export function isElement(obj: any) {
 //   return Object.prototype.toString.call(obj).indexOf("lement") > 0;
@@ -41,20 +36,8 @@ const ignoreProp = {
   state: 1,
   memo: 1,
   ref: 1,
+  len: 1,
 };
-
-function mkChild(sub: any, el: any) {
-  if (el && el.tagName && el.tagName !== "style") {
-    if (typeof sub === "number" || typeof sub === "string") {
-      let a = sub;
-      sub = document.createElement("span");
-      sub.textContent = a;
-    } else if (sub === undefined) {
-      sub = document.createElement("span");
-    }
-  }
-  return sub;
-}
 
 const El: typeof IEl = function (tagName: any, props: any, children: any) {
   if (props && props["by"]) {
@@ -71,14 +54,12 @@ const El: typeof IEl = function (tagName: any, props: any, children: any) {
     return tagName(props);
   }
 
-  let fns: any;
-  let fnchilds: any;
+  let fns = {} as any;
   let state = props && props["state"];
   let onDestory: Function;
   if (state) {
     onDestory = function () {
       fns = null;
-      fnchilds = null;
       onDestory = null as any;
     };
   }
@@ -88,53 +69,12 @@ const El: typeof IEl = function (tagName: any, props: any, children: any) {
         fns[k]();
       });
     }
-    if (fnchilds) {
-      Object.keys(fnchilds).forEach(function (k) {
-        const [run, el] = fnchilds[k];
-        if (el.parentElement) {
-          const sub = mkChild(run(), el.parentElement);
-          el.parentElement.replaceChild(sub, el);
-          fnchilds[k] = [run, sub];
-        }
-      });
-    }
   };
 
-  let appendList: any[] = [];
-  let isArrayProps = Array.isArray(props);
+  const isArrayProps = Array.isArray(props);
   if (props && isArrayProps) {
     children = props;
   }
-
-  const expchild = function (childs: any) {
-    if (childs && childs.length) {
-      for (let i = 0; i < childs.length; i++) {
-        if (Array.isArray(childs[i])) {
-          expchild(childs[i]);
-          return;
-        }
-        if (childs[i]) {
-          if (childs[i].__token) {
-            appendList.push(
-              El(childs[i].tag, childs[i].props, childs[i].children)
-            );
-          } else if (typeof childs[i] === "function") {
-            const sub = mkChild(childs[i](), ele);
-            if (props && props.state) {
-              if (!fnchilds) {
-                fnchilds = {};
-              }
-              fnchilds[i] = [childs[i], sub];
-            }
-            appendList.push(sub);
-          } else {
-            appendList.push(childs[i]);
-          }
-        }
-      }
-    }
-  };
-  expchild(children);
 
   if (props) {
     if (typeof props === "string") {
@@ -149,9 +89,6 @@ const El: typeof IEl = function (tagName: any, props: any, children: any) {
         }
         const obj = props[k];
         if (typeof obj === "function") {
-          if (!fns) {
-            fns = {};
-          }
           if (k.indexOf("on") === 0) {
             (ele as any)[k] = obj;
           } else if (k.indexOf("listen") === 0) {
@@ -208,6 +145,31 @@ const El: typeof IEl = function (tagName: any, props: any, children: any) {
         }
       });
 
+      if (typeof children === "function") {
+        // 实现动态child
+        fns.renderChildren = () => {
+          let len;
+          if (typeof props.len === "function") {
+            len = props.len(state);
+          } else if (typeof props.len === "number") {
+            len = props.len;
+          } else {
+            len = !!props.len ? 1 : 0;
+          }
+          const ol = (ele as any).__len || 0;
+          if (len > ol) {
+            for (let i = ol; i < len; i++) {
+              ele.append(...children(i));
+            }
+          } else if (len < ol) {
+            for (let i = ol; i < len; i++) {
+              ele.children.item(i).remove();
+            }
+          }
+          (ele as any).__len = len;
+        };
+      }
+
       // 实现 bind state 逻辑
       if (state) {
         if (!Array.isArray(state)) {
@@ -221,7 +183,7 @@ const El: typeof IEl = function (tagName: any, props: any, children: any) {
         state.forEach(function (ob: any) {
           ob.__subscribeElement(function () {
             if (memo) {
-              let nextCache = memo();
+              const nextCache = memo();
               for (let i = 0; i < nextCache.length; i++) {
                 if (nextCache[i] !== memoCache[i]) {
                   onUpdate();
@@ -248,18 +210,8 @@ const El: typeof IEl = function (tagName: any, props: any, children: any) {
     }
   }
 
-  if (appendList.length) {
-    const end = [] as any;
-    appendList.forEach((v) => {
-      if (Array.isArray(v)) {
-        v.forEach((v2) => {
-          end.push(v2);
-        });
-      } else {
-        end.push(v);
-      }
-    });
-    ele.append(...end);
+  if (children && typeof children !== "function") {
+    ele.append(...children);
   }
 
   onUpdate();

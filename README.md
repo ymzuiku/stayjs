@@ -141,16 +141,16 @@ function Box() {
 document.body.append(Box());
 ```
 
-Use `Component(props)` change component sub level tree props
+Use `Component(props, children)` change component sub level tree props
 
 ```js
 import { El, State } from "stayjs";
 
-function BigButton({ fontSize = "30px", background, color }) {
+function BigButton({ fontSize = "30px", background, color }, children) {
   return El("div", { style: { color } }, [
     El("button", {
       style: { fontSize, color, textContent: "no props button" },
-    }),
+    }, children),
   ]);
 }
 
@@ -320,7 +320,6 @@ index.module.css:
 
 index.ts:
 
-El type like: `El(Element|string, Props|className|children, children|()=>children)=>Element`
 
 ```js
 import { El } from "stayjs";
@@ -328,7 +327,7 @@ import css from "./index.module.css";
 
 function Box() {
   return El("div", css.box, [
-    El("h1", { className: css.hello, textContent: "hello" }),
+    El("h1", { class: css.hello, textContent: "hello" }),
     El("h2", { className: css.world, textContent: "world" }),
     El("button", ["touch me"]),
   ]);
@@ -337,7 +336,7 @@ function Box() {
 document.body.append(Box());
 ```
 
-We can use css-in-js also: `npm install --save vanilla-css-js`, and read it's README.md
+We can use flavorcss also: `npm install --save flavorcss`, and read it's README.md
 
 ## Animation
 

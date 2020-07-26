@@ -1,8 +1,13 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext", "webworker"],
-    "allowJs": false,
+    "target": "es6",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext",
+      "webworker"
+    ],
+    "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -17,12 +22,20 @@
     "noResolve": false,
     "noEmit": true,
     "inlineSourceMap": false,
-    "declaration": true,
+    "declaration": false,
     "outDir": "./umd",
-    "declarationDir": "./",
-    "jsxFactory": "h",
     "jsx": "preserve"
   },
-  "exclude": ["node_modules", "umd"],
-  "include": ["lib"]
+  "exclude": [
+    ".vscode",
+    ".git",
+    "node_modules",
+    "umd",
+    "dist"
+  ],
+  "include": [
+    "lib",
+    "scripts",
+    "server"
+  ]
 }

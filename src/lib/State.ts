@@ -2,14 +2,14 @@ export default function State<T>(initVal: T) {
   const fns = new Set();
   const obj = {
     ...initVal,
+    update: (fn: (v: T) => any) => {
+      fn(obj);
+      obj.__next();
+    },
     __next: () => {
       requestAnimationFrame(() => {
         fns.forEach((fn: any) => fn(obj));
       });
-    },
-    update: (fn: (v: T) => any) => {
-      fn(obj);
-      obj.__next();
     },
     __subscribe: (fn: (v: T) => any) => {
       fns.add(fn);

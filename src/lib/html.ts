@@ -13,11 +13,8 @@ function h(tag: any, props: any, ...children: any[]) {
 
 export const htmlParser = htm.bind(h) as any;
 
-const html = <T extends HTMLElement>(
-  str: TemplateStringsArray,
-  ...values: any[]
-): T => {
-  let token: any = htmlParser(str, ...values);
+const html = <T extends HTMLElement>(str: TemplateStringsArray, ...values: any[]): T => {
+  const token: any = htmlParser(str, ...values);
   // if (Array.isArray(token)) {
   //   return token.map((v) => {
   //     return El(v.tag, v.props, v.children);
