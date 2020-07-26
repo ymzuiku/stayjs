@@ -147,7 +147,7 @@ Use `Component(props)` change component sub level tree props
 import { El, State } from "stayjs";
 
 function BigButton({ fontSize = "30px", background, color }) {
-  return El("div", {style:{color}} [
+  return El("div", { style: { color } }, [
     El("button", {
       style: { fontSize, color, textContent: "no props button" },
     }),

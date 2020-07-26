@@ -1,24 +1,16 @@
 import "flavorcss";
-
-import { html } from "./lib";
-import Other from "./other";
+import { El, State } from "./lib";
 
 function Box() {
-  return html`
-    <div>
-      hello
-      <em by=${Other}>
-        <div>dog</div>
-        <div>cat</div>
-      </em>
-    </div>
-  `;
+  return El("div", [
+    El("h1", { textContent: "hello" }),
+    El("h2", { textContent: "world" }),
+    El("button", "flavor bg-red-200", ["touch me"]),
+  ]);
 }
+
 
 const rootApp = document.getElementById("app")!;
 rootApp.innerHTML = "";
 
-console.time("b");
 rootApp.append(Box());
-console.timeEnd("b");
-// document.body.append(Box());

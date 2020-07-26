@@ -1045,10 +1045,10 @@ fill-range@^7.0.1:
   dependencies:
     to-regex-range "^5.0.1"
 
-flavorcss@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/flavorcss/-/flavorcss-0.1.2.tgz#fb4ddcd562fb71e925c64fbb57b72916a397022b"
-  integrity sha512-qrE2ecwv351B5kvU9k8IMMVikFKN/veRroFB+0D8W4HGiWL1nnwzgEQ1xmtvJqb7UbGD1mGSzDga2Hkx/K6rrA==
+flavorcss@^0.2.4:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/flavorcss/-/flavorcss-0.2.4.tgz#89710135cb35e73b6371264407abfffc67534f37"
+  integrity sha512-cz6vkQygBqMPzcz0MTfe5seoK3uzGvTTu0wj2z6fxoY9jjlIHySmGz9wpsJMXrz3hjv67hrSc9Egtyfn/8gQBA==
   dependencies:
     prism-react-renderer "^1.1.1"
 
