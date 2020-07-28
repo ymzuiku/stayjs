@@ -874,8 +874,10 @@ type RefOne = (e: HTMLElement) => any;
 type RefList = ((e: HTMLElement) => any)[];
 
 export interface IProps extends AddEventOptions {
+  /** 获取 element 回调 */
   ref?: RefOne | RefList;
-  state?: any;
+  /** 用于 bind ob */
+  ob?: any;
   /** 用于 children 遍历 */
   len?: any;
   /** 用于 htm 渲染时借用其他组件 */

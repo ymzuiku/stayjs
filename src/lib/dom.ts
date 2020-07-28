@@ -10,36 +10,34 @@ export function isElement(obj: any) {
   return Object.prototype.toString.call(obj).indexOf("lement") > 0;
 }
 
-declare function IEl<T extends Element>(
+declare function _Idom<T extends Element>(
   tagName: T,
   props?: IElementCallback | IProps | string | Children,
   children?: Children
 ): T;
 
-declare function IEl<T extends Element>(
+declare function _Idom<T extends Element>(
   tagName: Function,
   props?: IElementCallback | IProps | string | Children,
   children?: Children
 ): T;
 
-declare function IEl<K extends keyof HTMLElementTagNameMap>(
+declare function _Idom<K extends keyof HTMLElementTagNameMap>(
   tagName: K,
   props?: IElementCallback | IProps | string | Children,
   children?: Children
 ): HTMLElementTagNameMap[K];
 
-// interface ElePrototypeOptions {
-//   // state: typeof state;
-// }
-
 const ignoreProp = {
-  state: 1,
+  ob: 1,
   memo: 1,
   ref: 1,
   len: 1,
 };
 
-const El: typeof IEl = function (tagName: any, props: any, children: any) {
+export type Idom = typeof _Idom;
+
+const dom: Idom = function (tagName: any, props: any, children: any) {
   if (props && props["by"]) {
     tagName = props["by"];
     delete props["by"];
@@ -55,9 +53,9 @@ const El: typeof IEl = function (tagName: any, props: any, children: any) {
   }
 
   let fns = {} as any;
-  let state = props && props["state"];
+  let ob = props && props["ob"];
   let onDestory: Function;
-  if (state) {
+  if (ob) {
     onDestory = function () {
       fns = null;
       onDestory = null as any;
@@ -150,7 +148,7 @@ const El: typeof IEl = function (tagName: any, props: any, children: any) {
         fns.renderChildren = () => {
           let len;
           if (typeof props.len === "function") {
-            len = props.len(state);
+            len = props.len(ob);
           } else if (typeof props.len === "number") {
             len = props.len;
           } else {
@@ -176,18 +174,18 @@ const El: typeof IEl = function (tagName: any, props: any, children: any) {
         };
       }
 
-      // 实现 bind state 逻辑
-      if (state) {
-        if (!Array.isArray(state)) {
-          state = [state];
+      // 实现 bind ob 逻辑
+      if (ob) {
+        if (!Array.isArray(ob)) {
+          ob = [ob];
         }
         let memoCache: any;
         const memo = props["memo"];
         if (typeof memo === "function") {
           memoCache = memo();
         }
-        state.forEach(function (ob: any) {
-          ob.__subscribeElement(function () {
+        ob.forEach(function (ob: any) {
+          ob.$$.subscribeElement(function () {
             if (memo) {
               const nextCache = memo();
               for (let i = 0; i < nextCache.length; i++) {
@@ -225,4 +223,4 @@ const El: typeof IEl = function (tagName: any, props: any, children: any) {
   return ele;
 };
 
-export default El;
+export default dom;

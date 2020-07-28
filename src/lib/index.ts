@@ -1,5 +1,5 @@
-import El from "./El";
-import State from "./State";
+import dom from "./dom";
+import Ob from "./Ob";
 import fixAttr from "./fixAttr";
 
-export { El, State, fixAttr };
+export { dom, Ob, fixAttr };
