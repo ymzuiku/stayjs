@@ -3,12 +3,12 @@ import fixAttr from "./fixAttr";
 
 type IElementCallback = (ele: HTMLElement) => unknown;
 type ChildrenList = (HTMLElement | string | number | undefined | boolean | Function)[];
-type ChildrenFn = () => (HTMLElement | string | number | undefined | boolean | Function)[];
+type ChildrenFn = () => HTMLElement | string | number | undefined | boolean | Function;
 type Children = ChildrenList | ChildrenFn;
 
-// export function isElement(obj: any) {
-//   return Object.prototype.toString.call(obj).indexOf("lement") > 0;
-// }
+export function isElement(obj: any) {
+  return Object.prototype.toString.call(obj).indexOf("lement") > 0;
+}
 
 declare function IEl<T extends Element>(
   tagName: T,
@@ -156,15 +156,21 @@ const El: typeof IEl = function (tagName: any, props: any, children: any) {
           } else {
             len = !!props.len ? 1 : 0;
           }
-          const ol = (ele as any).__len || 0;
-          if (len > ol) {
-            for (let i = ol; i < len; i++) {
-              ele.append(...children(i));
+          const oldLen = (ele as any).__len || 0;
+          if (len > oldLen) {
+            for (let i = oldLen; i < len; i++) {
+              ele.append(children(i));
             }
-          } else if (len < ol) {
-            for (let i = ol; i < len; i++) {
-              ele.children.item(i).remove();
+          } else if (len < oldLen) {
+            const list: Element[] = [];
+            for (let i = oldLen; i >= len; i--) {
+              list.push(ele.children.item(i));
             }
+            list.forEach((e) => {
+              if (e) {
+                e.remove();
+              }
+            });
           }
           (ele as any).__len = len;
         };

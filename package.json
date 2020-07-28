@@ -13,7 +13,7 @@
     "build:node": "esbuild src/main.ts --bundle --target=es2016 '--define:process.env.NODE_ENV=\"development\"' --outfile=build/index.js",
     "build": "vite build",
     "server": "yarn build:server -w & cd dist && nodemon index.js",
-    "vite": "vite"
+    "dev": "vite"
   },
   "husky": {
     "hooks": {

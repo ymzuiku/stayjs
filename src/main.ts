@@ -1,13 +1,14 @@
 import { El, State } from "./lib";
 
+const bb = State({ name: "aaaaa", age: 10 });
 function Box() {
-  const state = State({ name: "aaaaa", age: 10 });
-
-  return El("div", { state, len: 20 }, () => [
-    El("button", { onclick: () => state.update(() => (state.age += 1)) }, ["Clear list"]),
-    El("div", { state, textContent: () => [state.age, state.name, state.name.length].join(",") }),
-    El("div", { state, len: state.age > 12 }, () => ["hello"]),
-  ]);
+  return El("div", { state: bb, len: () => bb.name.length }, () =>
+    El("div", [
+      El("button", { onclick: () => bb.update(() => (bb.age += 1)) }, ["Clear list"]),
+      El("div", { state: bb, textContent: () => [bb.age, bb.name, bb.name.length].join(",") }),
+      El("div", { state: bb, len: () => bb.name.length > 5 }, () => "hello"),
+    ])
+  );
 }
 
 function App() {
@@ -24,6 +25,13 @@ function App() {
         oninput: (e) => {
           state.update((s) => {
             s.name = e.target.value;
+          });
+        },
+      }),
+      El("input", {
+        oninput: (e) => {
+          bb.update((v) => {
+            v.name = e.target.value;
           });
         },
       }),
